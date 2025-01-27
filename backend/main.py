@@ -7,6 +7,7 @@ app = FastAPI()
 
 Base.metadata.create_all(bind=engine)
 
+#load data is called on startup 
 @app.on_event("startup")
 async def startup_event():
     load_data()
