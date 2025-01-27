@@ -1,7 +1,7 @@
 import csv
-from fastapi import FastAPI, Depends
-from .database import init_db, SessionLocal
-from .models import Venue, Game, Simulation
+from fastapi import FastAPI
+from database import init_db, SessionLocal
+from models import Venue, Game, Simulation
 
 app = FastAPI()
 
