@@ -6,6 +6,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import { makeStyles } from "@mui/styles";
+import Histogram from "./Histogram";
 
 const useStyles = makeStyles({
   selectContainer: {
@@ -17,6 +18,8 @@ function GameSelection() {
   const [homeTeams, setHomeTeams] = useState([]);
   const [awayTeams, setAwayTeams] = useState([]);
   const [gameDates, setGameDates] = useState([]);
+  const [simulationResultsHome, setSimulationResultsHome] = useState([]);
+  const [simulationResultsAway, setSimulationResultsAway] = useState([]);
   const [selectedHomeTeam, setHomeTeam] = useState("");
   const [selectedAwayTeam, setAwayTeam] = useState("");
   const [selectedGameDate, setGameDate] = useState("");
@@ -54,6 +57,18 @@ function GameSelection() {
     }
   };
 
+  const fetchSimulationResults = async () => {
+    try {
+      const homeResults = await api.get(`/get_simulations/${selectedHomeTeam}`);
+      setSimulationResultsHome(homeResults.data);
+
+      const awayResults = await api.get(`/get_simulations/${selectedAwayTeam}`);
+      setSimulationResultsAway(awayResults.data);
+    } catch (err) {
+      console.error("Error fetching simulation results:", err);
+    }
+  };
+
   useEffect(() => {
     fetchHomeTeams();
   }, []);
@@ -68,6 +83,7 @@ function GameSelection() {
   useEffect(() => {
     if (selectedHomeTeam && selectedAwayTeam) {
       fetchGameDates();
+      fetchSimulationResults();
     }
   }, [selectedHomeTeam, selectedAwayTeam]);
 
@@ -152,6 +168,12 @@ function GameSelection() {
           </FormControl>
         </Grid>
       </Grid>
+      {simulationResultsHome.length > 0 && simulationResultsAway.length > 0 && (
+        <Histogram
+          simulationResultsHome={simulationResultsHome}
+          simulationResultsAway={simulationResultsAway}
+        />
+      )}
     </>
   );
 }
