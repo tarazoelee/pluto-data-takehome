@@ -6,6 +6,8 @@ const useStyles = makeStyles({
   root: {
     padding: "40px 80px",
     backgroundColor: "#1d2430",
+    width: "100vw",
+    height: "200px",
   },
   title: {
     fontWeight: 900,
