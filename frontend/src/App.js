@@ -1,23 +1,29 @@
-import "./App.css";
-import api from "./api";
 import React, { useEffect, useState } from "react";
+import Grid from "@mui/material/Button";
+import { makeStyles } from "@mui/styles";
+import { Typography } from "@mui/material";
+
+const useStyles = makeStyles({
+  title: {
+    color: "black",
+  },
+});
 
 function App() {
-  const [homeTeams, setHomeTeams] = useState([]);
-  const fetchHomeTeams = async () => {
-    try {
-      const res = await api.get("/get_home_teams/");
-      setHomeTeams(res.data);
-    } catch (err) {
-      console.error("Error getting teams");
-    }
-  };
+  const classes = useStyles();
 
-  useEffect(() => {
-    fetchHomeTeams();
-  }, []);
-
-  return <div className="App">{homeTeams}</div>;
+  return (
+    <>
+      <Grid container>
+        <Grid item className={classes.title}>
+          <Typography>Cricket Game Analysis</Typography>
+        </Grid>
+        <Grid item>
+          <Typography>Pluto Data</Typography>
+        </Grid>
+      </Grid>
+    </>
+  );
 }
 
 export default App;
