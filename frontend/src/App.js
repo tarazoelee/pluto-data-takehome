@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid2";
 import { makeStyles } from "@mui/styles";
+import Navbar from "./Components/Navbar";
 
 const useStyles = makeStyles({
   root: {
-    padding: "100px",
-  },
-  title: {
-    fontWeight: 700,
-    fontSize: "24px",
-  },
-  subTitle: {
-    fontSize: "22px",
+    backgroundColor: "#1d2430",
+    minHeight: "100vh",
   },
 });
 
@@ -20,17 +15,8 @@ function App() {
 
   return (
     <>
-      <Grid
-        container
-        direction="column"
-        justifyContent="center"
-        alignItems="center"
-        className={classes.root}
-      >
-        <Grid className={classes.title}>Cricket Game Analysis</Grid>
-        <Grid item className={classes.subTitle}>
-          Pluto Data
-        </Grid>
+      <Grid container className={classes.root}>
+        <Navbar></Navbar>
       </Grid>
     </>
   );
