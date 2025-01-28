@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from "react";
-import Grid from "@mui/material/Button";
+import Grid from "@mui/material/Grid2";
 import { makeStyles } from "@mui/styles";
-import { Typography } from "@mui/material";
 
 const useStyles = makeStyles({
+  root: {
+    padding: "100px",
+  },
   title: {
-    color: "black",
+    fontWeight: 700,
+    fontSize: "24px",
+  },
+  subTitle: {
+    fontSize: "22px",
   },
 });
 
@@ -14,12 +20,16 @@ function App() {
 
   return (
     <>
-      <Grid container>
-        <Grid item className={classes.title}>
-          <Typography>Cricket Game Analysis</Typography>
-        </Grid>
-        <Grid item>
-          <Typography>Pluto Data</Typography>
+      <Grid
+        container
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+        className={classes.root}
+      >
+        <Grid className={classes.title}>Cricket Game Analysis</Grid>
+        <Grid item className={classes.subTitle}>
+          Pluto Data
         </Grid>
       </Grid>
     </>
