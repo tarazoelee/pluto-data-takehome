@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid2";
 import { makeStyles } from "@mui/styles";
 import Navbar from "./Components/Navbar";
+import GameSelection from "./Components/GameSelection";
 
 const useStyles = makeStyles({
   root: {
@@ -16,7 +17,12 @@ function App() {
   return (
     <>
       <Grid container className={classes.root}>
-        <Navbar></Navbar>
+        <Grid>
+          <Navbar></Navbar>
+        </Grid>
+        <Grid>
+          <GameSelection></GameSelection>
+        </Grid>
       </Grid>
     </>
   );
