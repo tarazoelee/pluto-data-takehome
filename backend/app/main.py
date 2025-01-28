@@ -14,7 +14,6 @@ app = FastAPI()
 #creating db tables on start
 @app.on_event("startup")
 def startup():
-    models.Base.metadata.drop_all(bind=engine)
     models.Base.metadata.create_all(bind=engine)
 
 #trying to open or close db 
