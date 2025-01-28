@@ -1,8 +1,7 @@
 import React from "react";
-import api from "../api";
 
-const histogram = () => {
-  return <div>"test"</div>;
+const Histogram = () => {
+  return <>"test"</>;
 };
 
-export default histogram;
+export default Histogram;
