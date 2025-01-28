@@ -15,6 +15,7 @@ def get_db():
 
 db_dependency = Annotated[Session, Depends(get_db)]
 
+#TEAM INFO
 @router.get("/get_home_teams/")
 def get_home_teams(db: db_dependency):
     home_teams = db.query(Game.home_team).distinct().all()
@@ -27,6 +28,8 @@ def get_away_teams(home_team: str, db: db_dependency):
         raise HTTPException(status_code=404, detail=f"No away teams found for home team {home_team}")
     return [team[0] for team in away_teams]
 
+
+#GAME INFO 
 @router.get("/get_game_dates/")
 def get_game_dates(home_team: str, away_team: str, db: db_dependency):
     game_dates = db.query(Game.date).filter(
@@ -62,3 +65,22 @@ def get_game_venue(home_team: str, away_team: str, date: str, db: db_dependency)
         "venue_id": venue.venue_id,
         "venue_name": venue.venue_name
     }
+
+@router.get("/get_simulations/{team_name}")
+def get_simulations(team_name: str, db: db_dependency):
+    simulations = db.query(Simulation).filter(Simulation.team == team_name).all()
+
+    if not simulations:
+        raise HTTPException(
+            status_code=404,
+            detail=f"No simulations found for team '{team_name}'"
+        )
+
+    response = [
+        {"simulation_run": sim.simulation_run, "results": sim.results}
+        for sim in simulations
+    ]
+
+    return response
+
+
