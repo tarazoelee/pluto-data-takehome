@@ -16,8 +16,10 @@ const useStyles = makeStyles({
 function GameSelection() {
   const [homeTeams, setHomeTeams] = useState([]);
   const [awayTeams, setAwayTeams] = useState([]);
+  const [gameDates, setGameDates] = useState([]);
   const [selectedHomeTeam, setHomeTeam] = useState("");
   const [selectedAwayTeam, setAwayTeam] = useState("");
+  const [selectedGameDate, setGameDate] = useState("");
   const classes = useStyles();
 
   const fetchHomeTeams = async () => {
@@ -38,16 +40,36 @@ function GameSelection() {
     }
   };
 
+  const fetchGameDates = async () => {
+    try {
+      const res = await api.get("/get_game_dates/", {
+        params: {
+          home_team: selectedHomeTeam,
+          away_team: selectedAwayTeam,
+        },
+      });
+      setGameDates(res.data);
+    } catch (err) {
+      console.error("Error fetching game dates:", err);
+    }
+  };
+
   useEffect(() => {
     fetchHomeTeams();
   }, []);
 
-  // Only fetch away teams if a home team is selected
+  // Fetch away teams when the home team is selected
   useEffect(() => {
     if (selectedHomeTeam) {
       fetchAwayTeams();
     }
   }, [selectedHomeTeam]);
+
+  useEffect(() => {
+    if (selectedHomeTeam && selectedAwayTeam) {
+      fetchGameDates();
+    }
+  }, [selectedHomeTeam, selectedAwayTeam]);
 
   const handleSelectHomeTeam = (event) => {
     setHomeTeam(event.target.value);
@@ -55,6 +77,10 @@ function GameSelection() {
 
   const handleSelectAwayTeam = (event) => {
     setAwayTeam(event.target.value);
+  };
+
+  const handleSelectGame = (event) => {
+    setGameDate(event.target.value);
   };
 
   return (
@@ -84,7 +110,7 @@ function GameSelection() {
 
         <Grid item>
           <FormControl fullWidth className={classes.formControl}>
-            <InputLabel className={classes.inputLabel}>Away Team</InputLabel>
+            <InputLabel className={classes.inputLabel}>Games</InputLabel>
             <Select
               value={selectedAwayTeam}
               onChange={handleSelectAwayTeam}
@@ -92,7 +118,29 @@ function GameSelection() {
               className={classes.select}
             >
               {awayTeams.length > 0 ? (
-                awayTeams.map((team, index) => (
+                awayTeams.map((date, index) => (
+                  <MenuItem key={index} value={date}>
+                    {date}
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem disabled>No Teams Available</MenuItem>
+              )}
+            </Select>
+          </FormControl>
+        </Grid>
+
+        <Grid item>
+          <FormControl fullWidth className={classes.formControl}>
+            <InputLabel className={classes.inputLabel}>Away Team</InputLabel>
+            <Select
+              value={selectedGameDate}
+              onChange={handleSelectGame}
+              label="select away team"
+              className={classes.select}
+            >
+              {gameDates.length > 0 ? (
+                gameDates.map((team, index) => (
                   <MenuItem key={index} value={team}>
                     {team}
                   </MenuItem>
