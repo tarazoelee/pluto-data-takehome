@@ -2,11 +2,11 @@
 import pandas as pd
 from fastapi import FastAPI, HTTPException, Depends
 from app.database import engine, SessionLocal
-from pydantic import BaseModel
 from typing import List, Annotated
 from sqlalchemy.orm import Session
 from app import models
 from app.models import Venue, Game, Simulation
+from app.routes import router
 import psycopg2
 
 app = FastAPI()
@@ -15,6 +15,7 @@ app = FastAPI()
 @app.on_event("startup")
 def startup():
     models.Base.metadata.create_all(bind=engine)
+    app.include_router(router)
 
 #trying to open or close db 
 def get_db():
