@@ -13,19 +13,21 @@ import {
 const Histogram = ({ simulationResultsHome, simulationResultsAway }) => {
   const bucketData = (data) => {
     const buckets = [
-      { range: "0-10", count: 0 },
-      { range: "10-20", count: 0 },
-      { range: "20-30", count: 0 },
-      { range: "30-40", count: 0 },
-      { range: "40-50", count: 0 },
+      { range: "80-100", count: 0 },
+      { range: "100-120", count: 0 },
+      { range: "120-140", count: 0 },
+      { range: "140-160", count: 0 },
+      { range: "160-180", count: 0 },
+      { range: "180-200", count: 0 },
     ];
 
-    data.forEach((score) => {
-      if (score >= 0 && score <= 10) buckets[0].count += 1;
-      else if (score > 10 && score <= 20) buckets[1].count += 1;
-      else if (score > 20 && score <= 30) buckets[2].count += 1;
-      else if (score > 30 && score <= 40) buckets[3].count += 1;
-      else if (score > 40 && score <= 50) buckets[4].count += 1;
+    data.forEach((item) => {
+      const score = item.results; // Accessing the results field
+      if (score >= 100 && score < 120) buckets[0].count += 1;
+      else if (score >= 120 && score < 140) buckets[1].count += 1;
+      else if (score >= 140 && score < 160) buckets[2].count += 1;
+      else if (score >= 160 && score < 180) buckets[3].count += 1;
+      else if (score >= 180 && score <= 200) buckets[4].count += 1;
     });
 
     return buckets;

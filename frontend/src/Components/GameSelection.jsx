@@ -60,6 +60,7 @@ function GameSelection() {
   const fetchSimulationResults = async () => {
     try {
       const homeResults = await api.get(`/get_simulations/${selectedHomeTeam}`);
+      console.log(homeResults.data);
       setSimulationResultsHome(homeResults.data);
 
       const awayResults = await api.get(`/get_simulations/${selectedAwayTeam}`);
