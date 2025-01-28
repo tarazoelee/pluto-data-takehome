@@ -30,7 +30,6 @@ db_dependency = Annotated[Session, Depends(get_db)]
 @app.post("/upload_venues/")
 def upload_venues(db: db_dependency):
     try:
-        # Load Venues CSV
         venues_df = pd.read_csv("app/data/venues.csv")
         for _, row in venues_df.iterrows():
             venue = Venue(venue_id=row["venue_id"], venue_name=row["venue_name"])
@@ -44,11 +43,10 @@ def upload_venues(db: db_dependency):
         raise HTTPException(status_code=400, detail=str(e))
 
 @app.post("/upload_games/")
-def upload_venues(db: db_dependency):
+def upload_games(db: db_dependency):
     try:
         games_df = pd.read_csv("app/data/games.csv")
         game_id = 0
-        venue_ids = [v.venue_id for v in db.query(Venue).all()]
         for _, row in games_df.iterrows():
 
             game = Game(
@@ -69,7 +67,7 @@ def upload_venues(db: db_dependency):
         raise HTTPException(status_code=400, detail=str(e))
 
 @app.post("/upload_simulations/")
-def upload_venues(db: db_dependency):
+def upload_simulations(db: db_dependency):
     try:
         simulations_df = pd.read_csv("app/data/simulations.csv")
         sim_id = 0
