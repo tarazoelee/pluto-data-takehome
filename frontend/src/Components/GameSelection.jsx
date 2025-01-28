@@ -110,7 +110,7 @@ function GameSelection() {
 
         <Grid item>
           <FormControl fullWidth className={classes.formControl}>
-            <InputLabel className={classes.inputLabel}>Games</InputLabel>
+            <InputLabel className={classes.inputLabel}>Away Team</InputLabel>
             <Select
               value={selectedAwayTeam}
               onChange={handleSelectAwayTeam}
@@ -132,7 +132,7 @@ function GameSelection() {
 
         <Grid item>
           <FormControl fullWidth className={classes.formControl}>
-            <InputLabel className={classes.inputLabel}>Away Team</InputLabel>
+            <InputLabel className={classes.inputLabel}>Game</InputLabel>
             <Select
               value={selectedGameDate}
               onChange={handleSelectGame}
