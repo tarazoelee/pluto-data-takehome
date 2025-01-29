@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from "react";
 import api from "../api";
-import Grid from "@mui/material/Grid2";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
+
+import React, { useState, useEffect } from "react";
 import FormControl from "@mui/material/FormControl";
+import Grid from "@mui/material/Grid2";
 import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
 import { makeStyles } from "@mui/styles";
+import Select from "@mui/material/Select";
+
 import Histogram from "./Histogram";
+import WinPercentage from "./WinPercentage";
 
 const useStyles = makeStyles({
   selectContainer: {
@@ -60,7 +63,6 @@ function GameSelection() {
   const fetchSimulationResults = async () => {
     try {
       const homeResults = await api.get(`/get_simulations/${selectedHomeTeam}`);
-      console.log(homeResults.data);
       setSimulationResultsHome(homeResults.data);
 
       const awayResults = await api.get(`/get_simulations/${selectedAwayTeam}`);
@@ -173,6 +175,12 @@ function GameSelection() {
         <Histogram
           simulationResultsHome={simulationResultsHome}
           simulationResultsAway={simulationResultsAway}
+        />
+      )}
+      {selectedHomeTeam && (
+        <WinPercentage
+          home_team={selectedHomeTeam}
+          away_team={selectedAwayTeam}
         />
       )}
     </>
