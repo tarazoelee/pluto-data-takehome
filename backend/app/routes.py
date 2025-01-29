@@ -109,6 +109,8 @@ def get_win_percentage(
 
     win_percentage = (wins / total_simulations) * 100 if total_simulations > 0 else 0
 
+    rounded_win_percentage = round(win_percentage,1)
+
     return {
-        "win_percentage": win_percentage
+        "win_percentage": rounded_win_percentage
     }
