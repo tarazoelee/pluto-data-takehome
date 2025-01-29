@@ -6,6 +6,13 @@ import Grid from "@mui/material/Grid2";
 import Histogram from "./Histogram";
 import WinPercentage from "./WinPercentage";
 import SelectField from "./SelectField";
+import { makeStyles } from "@mui/styles";
+
+const useStyles = makeStyles({
+  root: {
+    padding: "100px 0px",
+  },
+});
 
 function GameSelection() {
   const [homeTeams, setHomeTeams] = useState([]);
@@ -16,6 +23,7 @@ function GameSelection() {
   const [selectedHomeTeam, setHomeTeam] = useState("");
   const [selectedAwayTeam, setAwayTeam] = useState("");
   const [selectedGameDate, setGameDate] = useState("");
+  const classes = useStyles();
 
   const fetchHomeTeams = async () => {
     try {
@@ -94,10 +102,11 @@ function GameSelection() {
   return (
     <>
       <Grid
+        item
         container
         spacing={8}
-        justifyContent={"center"}
-        alignItems={"center"}
+        direction={"column"}
+        className={classes.root}
       >
         <Grid item container>
           <SelectField
@@ -120,19 +129,23 @@ function GameSelection() {
           ></SelectField>
         </Grid>
         {simulationResultsHome.length > 0 &&
-          simulationResultsAway.length > 0 && (
-            <Histogram
-              simulationResultsHome={simulationResultsHome}
-              simulationResultsAway={simulationResultsAway}
-              homeTeam={selectedHomeTeam}
-              awayTeam={selectedAwayTeam}
-            />
-          )}
-        {selectedHomeTeam && selectedAwayTeam && (
+        simulationResultsAway.length > 0 ? (
+          <Histogram
+            simulationResultsHome={simulationResultsHome}
+            simulationResultsAway={simulationResultsAway}
+            homeTeam={selectedHomeTeam}
+            awayTeam={selectedAwayTeam}
+          />
+        ) : (
+          <Grid></Grid>
+        )}
+        {selectedHomeTeam && selectedAwayTeam ? (
           <WinPercentage
             home_team={selectedHomeTeam}
             away_team={selectedAwayTeam}
           />
+        ) : (
+          <Grid></Grid>
         )}
       </Grid>
     </>

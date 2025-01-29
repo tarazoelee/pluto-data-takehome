@@ -10,6 +10,7 @@ import {
   Label,
   ResponsiveContainer,
 } from "recharts";
+import Grid from "@mui/material/Grid2";
 
 const Histogram = ({
   simulationResultsHome,
@@ -53,10 +54,10 @@ const Histogram = ({
     <ResponsiveContainer width="100%" height={400}>
       <BarChart data={data}>
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="range">
-          <Label value="Simulation score ranges" offset={5} position="bottom" />
+        <XAxis dataKey="range" margin={{ top: 20 }}>
+          <Label value="Simulation score ranges" position="bottom" />
         </XAxis>
-        <YAxis>
+        <YAxis margin={{ right: 20 }}>
           <Label
             value="Score frequency"
             offset={2}
@@ -65,7 +66,11 @@ const Histogram = ({
           />
         </YAxis>
         <Tooltip />
-        <Legend align="center" verticalAlign="top" />
+        <Legend
+          align="center"
+          verticalAlign="top"
+          wrapperStyle={{ paddingBottom: 20 }}
+        />
         <Bar dataKey="homeCount" name={homeTeam} fill="#f6ae2d" />
         <Bar dataKey="awayCount" name={awayTeam} fill="#86bbd8" />
       </BarChart>
