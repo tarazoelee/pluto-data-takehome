@@ -129,23 +129,20 @@ function GameSelection() {
           ></SelectField>
         </Grid>
         {simulationResultsHome.length > 0 &&
-        simulationResultsAway.length > 0 ? (
-          <Histogram
-            simulationResultsHome={simulationResultsHome}
-            simulationResultsAway={simulationResultsAway}
-            homeTeam={selectedHomeTeam}
-            awayTeam={selectedAwayTeam}
-          />
-        ) : (
-          <Grid></Grid>
-        )}
-        {selectedHomeTeam && selectedAwayTeam ? (
+          simulationResultsAway.length > 0 && (
+            <Histogram
+              simulationResultsHome={simulationResultsHome}
+              simulationResultsAway={simulationResultsAway}
+              homeTeam={selectedHomeTeam}
+              awayTeam={selectedAwayTeam}
+            />
+          )}
+
+        {selectedHomeTeam && selectedAwayTeam && (
           <WinPercentage
             home_team={selectedHomeTeam}
             away_team={selectedAwayTeam}
           />
-        ) : (
-          <Grid></Grid>
         )}
       </Grid>
     </>

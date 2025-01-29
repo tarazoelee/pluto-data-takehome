@@ -5,9 +5,10 @@ import React, { useState, useEffect } from "react";
 
 const useStyles = makeStyles({
   winPercent: {
-    fontSize: "30px",
+    fontSize: "22px",
     color: "white",
     fontWeight: 900,
+    textAlign: "center",
   },
 });
 
@@ -35,7 +36,7 @@ function WinPercentage(props) {
 
   return (
     <Grid className={classes.winPercent}>
-      {props.home_team} win {winPercentage}% of the time
+      {props.home_team} win {winPercentage}% of the time!
     </Grid>
   );
 }
