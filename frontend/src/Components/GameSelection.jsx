@@ -1,21 +1,11 @@
 import api from "../api";
 
 import React, { useState, useEffect } from "react";
-import FormControl from "@mui/material/FormControl";
 import Grid from "@mui/material/Grid2";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import { makeStyles } from "@mui/styles";
-import Select from "@mui/material/Select";
 
 import Histogram from "./Histogram";
 import WinPercentage from "./WinPercentage";
-
-const useStyles = makeStyles({
-  selectContainer: {
-    width: 200,
-  },
-});
+import SelectField from "./SelectField";
 
 function GameSelection() {
   const [homeTeams, setHomeTeams] = useState([]);
@@ -26,7 +16,6 @@ function GameSelection() {
   const [selectedHomeTeam, setHomeTeam] = useState("");
   const [selectedAwayTeam, setAwayTeam] = useState("");
   const [selectedGameDate, setGameDate] = useState("");
-  const classes = useStyles();
 
   const fetchHomeTeams = async () => {
     try {
@@ -76,7 +65,7 @@ function GameSelection() {
     fetchHomeTeams();
   }, []);
 
-  // Fetch away teams when the home team is selected
+  //Fetch away teams when the home team is selected
   useEffect(() => {
     if (selectedHomeTeam) {
       fetchAwayTeams();
@@ -105,71 +94,24 @@ function GameSelection() {
   return (
     <>
       <Grid container spacing={2}>
-        <Grid item>
-          <FormControl fullWidth className={classes.formControl}>
-            <InputLabel className={classes.inputLabel}>Home Team</InputLabel>
-            <Select
-              value={selectedHomeTeam}
-              onChange={handleSelectHomeTeam}
-              label="Select Home Team 1"
-              className={classes.select}
-            >
-              {homeTeams.length > 0 ? (
-                homeTeams.map((team, index) => (
-                  <MenuItem key={index} value={team}>
-                    {team}
-                  </MenuItem>
-                ))
-              ) : (
-                <MenuItem disabled>No Teams Available</MenuItem>
-              )}
-            </Select>
-          </FormControl>
-        </Grid>
-
-        <Grid item>
-          <FormControl fullWidth className={classes.formControl}>
-            <InputLabel className={classes.inputLabel}>Away Team</InputLabel>
-            <Select
-              value={selectedAwayTeam}
-              onChange={handleSelectAwayTeam}
-              label="select away team"
-              className={classes.select}
-            >
-              {awayTeams.length > 0 ? (
-                awayTeams.map((date, index) => (
-                  <MenuItem key={index} value={date}>
-                    {date}
-                  </MenuItem>
-                ))
-              ) : (
-                <MenuItem disabled>No Teams Available</MenuItem>
-              )}
-            </Select>
-          </FormControl>
-        </Grid>
-
-        <Grid item>
-          <FormControl fullWidth className={classes.formControl}>
-            <InputLabel className={classes.inputLabel}>Game</InputLabel>
-            <Select
-              value={selectedGameDate}
-              onChange={handleSelectGame}
-              label="select away team"
-              className={classes.select}
-            >
-              {gameDates.length > 0 ? (
-                gameDates.map((team, index) => (
-                  <MenuItem key={index} value={team}>
-                    {team}
-                  </MenuItem>
-                ))
-              ) : (
-                <MenuItem disabled>No Teams Available</MenuItem>
-              )}
-            </Select>
-          </FormControl>
-        </Grid>
+        <SelectField
+          selectedTeam={selectedHomeTeam}
+          handleSelectTeam={handleSelectHomeTeam}
+          teamsList={homeTeams}
+          inputLabel={"Home Teams"}
+        ></SelectField>
+        <SelectField
+          selectedTeam={selectedAwayTeam}
+          handleSelectTeam={handleSelectAwayTeam}
+          teamsList={awayTeams}
+          inputLabel={"Away Teams"}
+        ></SelectField>
+        <SelectField
+          selectedTeam={selectedGameDate}
+          handleSelectTeam={handleSelectGame}
+          teamsList={gameDates}
+          inputLabel={"Games"}
+        ></SelectField>
       </Grid>
       {simulationResultsHome.length > 0 && simulationResultsAway.length > 0 && (
         <Histogram
@@ -177,7 +119,7 @@ function GameSelection() {
           simulationResultsAway={simulationResultsAway}
         />
       )}
-      {selectedHomeTeam && (
+      {selectedHomeTeam && selectedAwayTeam && (
         <WinPercentage
           home_team={selectedHomeTeam}
           away_team={selectedAwayTeam}
