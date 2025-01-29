@@ -9,31 +9,25 @@ const useStyles = makeStyles({
     width: "100vw",
     maxHeight: "150px",
     position: "absolute",
-    top: 0,
+    bottom: 0,
   },
-  title: {
+  text: {
     fontWeight: 900,
     fontSize: "26px",
     color: "#f6ae2d",
   },
-  subTitle: {
-    fontSize: "18px",
-    fontWeight: 900,
-    color: "#86bbd8",
-  },
 });
 
-function Navbar() {
+function Footer() {
   const classes = useStyles();
 
   return (
     <>
       <Grid container direction="column" className={classes.root}>
-        <Grid className={classes.title}>Cricket Game Analysis</Grid>
-        <Grid className={classes.subTitle}>Pluto Data Analytics</Grid>
+        made by tara lee
       </Grid>
     </>
   );
 }
 
-export default Navbar;
+export default Footer;

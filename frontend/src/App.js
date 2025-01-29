@@ -3,10 +3,13 @@ import Grid from "@mui/material/Grid2";
 import Navbar from "./Components/Navbar";
 import GameSelection from "./Components/GameSelection";
 import { makeStyles } from "@mui/styles";
+import Footer from "./Components/Footer";
 
 const useStyles = makeStyles({
   root: {
     fontFamily: "'Arsenal', sans-serif",
+    display: "flex", // Enable flexbox
+    minHeight: "100vh",
   },
 });
 
@@ -21,6 +24,7 @@ function App() {
     >
       <Navbar></Navbar>
       <GameSelection></GameSelection>
+      <Footer></Footer>
     </Grid>
   );
 }
