@@ -1,7 +1,18 @@
-import React, { useState, useEffect } from "react";
 import api from "../api";
+import Grid from "@mui/material/Grid2";
+import { makeStyles } from "@mui/styles";
+import React, { useState, useEffect } from "react";
+
+const useStyles = makeStyles({
+  winPercent: {
+    fontSize: "30px",
+    color: "white",
+    fontWeight: 900,
+  },
+});
 
 function WinPercentage(props) {
+  const classes = useStyles();
   const [winPercentage, setWinPercentage] = useState("");
 
   const fetch_win_percentage = async () => {
@@ -13,7 +24,6 @@ function WinPercentage(props) {
         },
       });
       setWinPercentage(res.data.win_percentage);
-      console.log();
     } catch (err) {
       console.error("Error getting win percentage");
     }
@@ -21,8 +31,13 @@ function WinPercentage(props) {
 
   useEffect(() => {
     fetch_win_percentage();
-  }, []);
-  return <div>{winPercentage}</div>;
+  }, [props]);
+
+  return (
+    <Grid className={classes.winPercent}>
+      {props.home_team} win {winPercentage}% of the time
+    </Grid>
+  );
 }
 
 export default WinPercentage;
