@@ -7,45 +7,67 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
+  Label,
   ResponsiveContainer,
 } from "recharts";
 
-const Histogram = ({ simulationResultsHome, simulationResultsAway }) => {
-  const bucketData = (data) => {
+const Histogram = ({
+  simulationResultsHome,
+  simulationResultsAway,
+  homeTeam,
+  awayTeam,
+}) => {
+  const bucketData = (homeData, awayData) => {
     const buckets = [
-      { range: "80-100", count: 0 },
-      { range: "100-120", count: 0 },
-      { range: "120-140", count: 0 },
-      { range: "140-160", count: 0 },
-      { range: "160-180", count: 0 },
-      { range: "180-200", count: 0 },
+      { range: "100-120", homeCount: 0, awayCount: 0 },
+      { range: "120-140", homeCount: 0, awayCount: 0 },
+      { range: "140-160", homeCount: 0, awayCount: 0 },
+      { range: "160-180", homeCount: 0, awayCount: 0 },
+      { range: "180-200", homeCount: 0, awayCount: 0 },
     ];
 
-    data.forEach((item) => {
-      const score = item.results; // Accessing the results field
-      if (score >= 100 && score < 120) buckets[0].count += 1;
-      else if (score >= 120 && score < 140) buckets[1].count += 1;
-      else if (score >= 140 && score < 160) buckets[2].count += 1;
-      else if (score >= 160 && score < 180) buckets[3].count += 1;
-      else if (score >= 180 && score <= 200) buckets[4].count += 1;
+    homeData.forEach((item) => {
+      const score = item.results;
+      if (score >= 100 && score < 120) buckets[0].homeCount += 1;
+      else if (score >= 120 && score < 140) buckets[1].homeCount += 1;
+      else if (score >= 140 && score < 160) buckets[2].homeCount += 1;
+      else if (score >= 160 && score < 180) buckets[3].homeCount += 1;
+      else if (score >= 180 && score <= 200) buckets[4].homeCount += 1;
+    });
+
+    awayData.forEach((item) => {
+      const score = item.results;
+      if (score >= 100 && score < 120) buckets[0].awayCount += 1;
+      else if (score >= 120 && score < 140) buckets[1].awayCount += 1;
+      else if (score >= 140 && score < 160) buckets[2].awayCount += 1;
+      else if (score >= 160 && score < 180) buckets[3].awayCount += 1;
+      else if (score >= 180 && score <= 200) buckets[4].awayCount += 1;
     });
 
     return buckets;
   };
 
-  const homeBuckets = bucketData(simulationResultsHome);
-  const awayBuckets = bucketData(simulationResultsAway);
+  const data = bucketData(simulationResultsHome, simulationResultsAway);
 
   return (
     <ResponsiveContainer width="100%" height={400}>
-      <BarChart data={homeBuckets}>
+      <BarChart data={data}>
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="range" />
-        <YAxis />
+        <XAxis dataKey="range">
+          <Label value="Simulation score ranges" offset={5} position="bottom" />
+        </XAxis>
+        <YAxis>
+          <Label
+            value="Score frequency"
+            offset={2}
+            position="insideLeft"
+            angle="-90"
+          />
+        </YAxis>
         <Tooltip />
-        <Legend />
-        <Bar dataKey="count" name="Home Team" fill="#8884d8" />
-        <Bar dataKey="count" name="Away Team" fill="#82ca9d" />
+        <Legend align="center" verticalAlign="top" />
+        <Bar dataKey="homeCount" name={homeTeam} fill="#f6ae2d" />
+        <Bar dataKey="awayCount" name={awayTeam} fill="#86bbd8" />
       </BarChart>
     </ResponsiveContainer>
   );

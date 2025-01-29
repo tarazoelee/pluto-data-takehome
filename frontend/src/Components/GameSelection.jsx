@@ -124,6 +124,8 @@ function GameSelection() {
             <Histogram
               simulationResultsHome={simulationResultsHome}
               simulationResultsAway={simulationResultsAway}
+              homeTeam={selectedHomeTeam}
+              awayTeam={selectedAwayTeam}
             />
           )}
         {selectedHomeTeam && selectedAwayTeam && (
