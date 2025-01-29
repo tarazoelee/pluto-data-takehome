@@ -25,6 +25,7 @@ const Histogram = ({
       { range: "140-160", homeCount: 0, awayCount: 0 },
       { range: "160-180", homeCount: 0, awayCount: 0 },
       { range: "180-200", homeCount: 0, awayCount: 0 },
+      { range: "200-220", homeCount: 0, awayCount: 0 },
     ];
 
     homeData.forEach((item) => {
@@ -35,6 +36,7 @@ const Histogram = ({
       else if (score >= 140 && score < 160) buckets[3].homeCount += 1;
       else if (score >= 160 && score < 180) buckets[4].homeCount += 1;
       else if (score >= 180 && score <= 200) buckets[5].homeCount += 1;
+      else if (score >= 200 && score <= 220) buckets[6].homeCount += 1;
     });
 
     awayData.forEach((item) => {
@@ -45,6 +47,7 @@ const Histogram = ({
       else if (score >= 140 && score < 160) buckets[3].awayCount += 1;
       else if (score >= 160 && score < 180) buckets[4].awayCount += 1;
       else if (score >= 180 && score <= 200) buckets[5].awayCount += 1;
+      else if (score >= 200 && score <= 220) buckets[6].awayCount += 1;
     });
 
     return buckets;
