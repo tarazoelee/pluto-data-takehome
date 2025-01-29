@@ -93,38 +93,46 @@ function GameSelection() {
 
   return (
     <>
-      <Grid container spacing={2}>
-        <SelectField
-          selectedTeam={selectedHomeTeam}
-          handleSelectTeam={handleSelectHomeTeam}
-          teamsList={homeTeams}
-          inputLabel={"Home Teams"}
-        ></SelectField>
-        <SelectField
-          selectedTeam={selectedAwayTeam}
-          handleSelectTeam={handleSelectAwayTeam}
-          teamsList={awayTeams}
-          inputLabel={"Away Teams"}
-        ></SelectField>
-        <SelectField
-          selectedTeam={selectedGameDate}
-          handleSelectTeam={handleSelectGame}
-          teamsList={gameDates}
-          inputLabel={"Games"}
-        ></SelectField>
+      <Grid
+        container
+        spacing={8}
+        justifyContent={"center"}
+        alignItems={"center"}
+      >
+        <Grid item container>
+          <SelectField
+            selectedTeam={selectedHomeTeam}
+            handleSelectTeam={handleSelectHomeTeam}
+            teamsList={homeTeams}
+            inputLabel={"Home Teams"}
+          ></SelectField>
+          <SelectField
+            selectedTeam={selectedAwayTeam}
+            handleSelectTeam={handleSelectAwayTeam}
+            teamsList={awayTeams}
+            inputLabel={"Away Teams"}
+          ></SelectField>
+          <SelectField
+            selectedTeam={selectedGameDate}
+            handleSelectTeam={handleSelectGame}
+            teamsList={gameDates}
+            inputLabel={"Games"}
+          ></SelectField>
+        </Grid>
+        {simulationResultsHome.length > 0 &&
+          simulationResultsAway.length > 0 && (
+            <Histogram
+              simulationResultsHome={simulationResultsHome}
+              simulationResultsAway={simulationResultsAway}
+            />
+          )}
+        {selectedHomeTeam && selectedAwayTeam && (
+          <WinPercentage
+            home_team={selectedHomeTeam}
+            away_team={selectedAwayTeam}
+          />
+        )}
       </Grid>
-      {simulationResultsHome.length > 0 && simulationResultsAway.length > 0 && (
-        <Histogram
-          simulationResultsHome={simulationResultsHome}
-          simulationResultsAway={simulationResultsAway}
-        />
-      )}
-      {selectedHomeTeam && selectedAwayTeam && (
-        <WinPercentage
-          home_team={selectedHomeTeam}
-          away_team={selectedAwayTeam}
-        />
-      )}
     </>
   );
 }
