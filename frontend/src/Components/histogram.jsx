@@ -10,7 +10,6 @@ import {
   Label,
   ResponsiveContainer,
 } from "recharts";
-import Grid from "@mui/material/Grid2";
 
 const Histogram = ({
   simulationResultsHome,
