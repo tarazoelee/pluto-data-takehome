@@ -10,6 +10,7 @@ const useStyles = makeStyles({
     maxHeight: "150px",
     position: "absolute",
     bottom: 0,
+    fontWeight: 700,
   },
   text: {
     fontWeight: 900,

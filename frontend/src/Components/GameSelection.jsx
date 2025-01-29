@@ -1,5 +1,3 @@
-import api from "../api";
-
 import React, { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid2";
 
@@ -7,6 +5,12 @@ import Histogram from "./Histogram";
 import WinPercentage from "./WinPercentage";
 import SelectField from "./SelectField";
 import { makeStyles } from "@mui/styles";
+import {
+  getHomeTeams,
+  getGameDates,
+  getAwayTeams,
+  getSimulationResults,
+} from "../API/TeamAPI";
 
 const useStyles = makeStyles({
   root: {
@@ -30,64 +34,45 @@ function GameSelection() {
   const [selectedGameDate, setGameDate] = useState("");
   const classes = useStyles();
 
-  const fetchHomeTeams = async () => {
-    try {
-      const res = await api.get("/get_home_teams/");
-      setHomeTeams(res.data);
-    } catch (err) {
-      console.error("Error getting teams");
-    }
-  };
-
-  const fetchAwayTeams = async () => {
-    try {
-      const res = await api.get(`/get_away_teams/${selectedHomeTeam}`);
-      setAwayTeams(res.data);
-    } catch (err) {
-      console.error("Error getting teams");
-    }
-  };
-
-  const fetchGameDates = async () => {
-    try {
-      const res = await api.get("/get_game_dates/", {
-        params: {
-          home_team: selectedHomeTeam,
-          away_team: selectedAwayTeam,
-        },
-      });
-      setGameDates(res.data);
-    } catch (err) {
-      console.error("Error fetching game dates:", err);
-    }
-  };
-
-  const fetchSimulationResults = async () => {
-    try {
-      const homeResults = await api.get(`/get_simulations/${selectedHomeTeam}`);
-      setSimulationResultsHome(homeResults.data);
-
-      const awayResults = await api.get(`/get_simulations/${selectedAwayTeam}`);
-      setSimulationResultsAway(awayResults.data);
-    } catch (err) {
-      console.error("Error fetching simulation results:", err);
-    }
-  };
-
   useEffect(() => {
-    fetchHomeTeams();
+    const fetchTeams = async () => {
+      const teamData = await getHomeTeams();
+      if (teamData.success) {
+        setHomeTeams(teamData.res);
+      }
+    };
+    fetchTeams();
   }, []);
 
   useEffect(() => {
     if (selectedHomeTeam) {
-      fetchAwayTeams();
+      const fetchAwayTeamsData = async () => {
+        const awayData = await getAwayTeams(selectedHomeTeam);
+        if (awayData.success) {
+          setAwayTeams(awayData.res);
+        }
+      };
+      fetchAwayTeamsData();
     }
   }, [selectedHomeTeam]);
 
   useEffect(() => {
     if (selectedHomeTeam && selectedAwayTeam) {
-      fetchGameDates();
-      fetchSimulationResults();
+      const fetchGameData = async () => {
+        const gameData = await getGameDates(selectedHomeTeam, selectedAwayTeam);
+        if (gameData.success) {
+          setGameDates(gameData.res);
+        }
+        const simulationHome = await getSimulationResults(selectedHomeTeam);
+        if (simulationHome.success) {
+          setSimulationResultsHome(simulationHome.res);
+        }
+        const simulationAway = await getSimulationResults(selectedAwayTeam);
+        if (simulationAway.success) {
+          setSimulationResultsAway(simulationAway.res);
+        }
+      };
+      fetchGameData();
     }
   }, [selectedHomeTeam, selectedAwayTeam]);
 
