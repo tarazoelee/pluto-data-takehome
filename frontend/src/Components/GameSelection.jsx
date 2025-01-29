@@ -10,7 +10,10 @@ import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles({
   root: {
-    padding: "100px 0px",
+    padding: "50px 0px",
+  },
+  histogramContainer: {
+    minHeight: "400px",
   },
 });
 
@@ -73,7 +76,6 @@ function GameSelection() {
     fetchHomeTeams();
   }, []);
 
-  //Fetch away teams when the home team is selected
   useEffect(() => {
     if (selectedHomeTeam) {
       fetchAwayTeams();
@@ -104,7 +106,7 @@ function GameSelection() {
       <Grid
         item
         container
-        spacing={8}
+        spacing={4}
         direction={"column"}
         className={classes.root}
       >
@@ -128,16 +130,17 @@ function GameSelection() {
             inputLabel={"Games"}
           ></SelectField>
         </Grid>
-        {simulationResultsHome.length > 0 &&
-          simulationResultsAway.length > 0 && (
-            <Histogram
-              simulationResultsHome={simulationResultsHome}
-              simulationResultsAway={simulationResultsAway}
-              homeTeam={selectedHomeTeam}
-              awayTeam={selectedAwayTeam}
-            />
-          )}
-
+        <Grid item container className={classes.histogramContainer}>
+          {simulationResultsHome.length > 0 &&
+            simulationResultsAway.length > 0 && (
+              <Histogram
+                simulationResultsHome={simulationResultsHome}
+                simulationResultsAway={simulationResultsAway}
+                homeTeam={selectedHomeTeam}
+                awayTeam={selectedAwayTeam}
+              />
+            )}
+        </Grid>
         {selectedHomeTeam && selectedAwayTeam && (
           <WinPercentage
             home_team={selectedHomeTeam}
