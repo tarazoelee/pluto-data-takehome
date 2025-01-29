@@ -11,9 +11,11 @@ import { makeStyles } from "@mui/styles";
 const useStyles = makeStyles({
   root: {
     padding: "50px 0px",
+    alignItems: "center",
   },
   histogramContainer: {
-    minHeight: "400px",
+    height: "400px",
+    width: "900px",
   },
 });
 
@@ -130,7 +132,12 @@ function GameSelection() {
             inputLabel={"Games"}
           ></SelectField>
         </Grid>
-        <Grid item container className={classes.histogramContainer}>
+        <Grid
+          item
+          container
+          className={classes.histogramContainer}
+          justifyContent={"center"}
+        >
           {simulationResultsHome.length > 0 &&
             simulationResultsAway.length > 0 && (
               <Histogram
@@ -140,13 +147,14 @@ function GameSelection() {
                 awayTeam={selectedAwayTeam}
               />
             )}
+
+          {selectedHomeTeam && selectedAwayTeam && (
+            <WinPercentage
+              home_team={selectedHomeTeam}
+              away_team={selectedAwayTeam}
+            />
+          )}
         </Grid>
-        {selectedHomeTeam && selectedAwayTeam && (
-          <WinPercentage
-            home_team={selectedHomeTeam}
-            away_team={selectedAwayTeam}
-          />
-        )}
       </Grid>
     </>
   );
