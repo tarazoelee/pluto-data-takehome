@@ -7,7 +7,7 @@ import GameSelection from "./Components/GameSelection";
 const useStyles = makeStyles({
   root: {},
   content: {
-    padding: "0px 200px",
+    padding: "100px 200px",
   },
 });
 

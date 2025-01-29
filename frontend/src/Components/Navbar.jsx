@@ -4,10 +4,10 @@ import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles({
   root: {
-    padding: "40px 80px",
-    backgroundColor: "#1d2430",
+    padding: "30px 80px",
+    backgroundColor: "#edf1f7",
     width: "100vw",
-    height: "200px",
+    maxHeight: "150px",
   },
   title: {
     fontWeight: 900,
