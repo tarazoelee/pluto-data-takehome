@@ -8,7 +8,6 @@ import Footer from "./Components/Footer";
 const useStyles = makeStyles({
   root: {
     fontFamily: "'Arsenal', sans-serif",
-    display: "flex", // Enable flexbox
     minHeight: "100vh",
   },
 });
