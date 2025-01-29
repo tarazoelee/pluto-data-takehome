@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import api from "../api";
-import { number } from "mathjs";
 
 function WinPercentage(props) {
-  const [winPercentage, setWinPercentage] = useState(number);
+  const [winPercentage, setWinPercentage] = useState("");
 
   const fetch_win_percentage = async () => {
     try {
@@ -13,7 +12,8 @@ function WinPercentage(props) {
           away_team: props.away_team,
         },
       });
-      setWinPercentage(res.data);
+      setWinPercentage(res.data.win_percentage);
+      console.log();
     } catch (err) {
       console.error("Error getting win percentage");
     }
@@ -21,8 +21,8 @@ function WinPercentage(props) {
 
   useEffect(() => {
     fetch_win_percentage();
-  }, [winPercentage]);
-  return <div>winPercentage</div>;
+  }, []);
+  return <div>{winPercentage}</div>;
 }
 
 export default WinPercentage;
