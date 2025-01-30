@@ -8,3 +8,5 @@
 
 #using axios and cors to connect
 #run backend and front end to display data
+
+#start up using docker: docker compose up
