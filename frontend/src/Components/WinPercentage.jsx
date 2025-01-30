@@ -1,4 +1,4 @@
-import api from "../API";
+import api from "../API/api";
 import Grid from "@mui/material/Grid2";
 import { makeStyles } from "@mui/styles";
 import React, { useState, useEffect } from "react";
