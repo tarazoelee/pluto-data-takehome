@@ -1,15 +1,24 @@
-# import csv
-import pandas as pd
-from fastapi import FastAPI, HTTPException, Depends
-from app.database import engine, SessionLocal
-from typing import List, Annotated
-from sqlalchemy.orm import Session
 from app import models
+from app.database import engine, SessionLocal
 from app.models import Venue, Game, Simulation
 from app.routes import router
+
+from fastapi import FastAPI, HTTPException, Depends
+from fastapi.middleware.cors import CORSMiddleware
+
+import pandas as pd
+import uvicorn
+
+from typing import Annotated
+from sqlalchemy.orm import Session
+
 import psycopg2
 
 app = FastAPI()
+
+origins=["http://localhost:3000"]
+
+app.add_middleware(CORSMiddleware, allow_origins=origins,allow_credentials=True,allow_methods=["*"], allow_headers=["*"])
 
 #creating db tables on start
 @app.on_event("startup")
@@ -87,3 +96,6 @@ def upload_simulations(db: db_dependency):
     except Exception as e:
         db.rollback() 
         raise HTTPException(status_code=400, detail=str(e))
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)

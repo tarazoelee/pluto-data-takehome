@@ -1,24 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import Grid from "@mui/material/Grid2";
+import Navbar from "./Components/Navbar";
+import GameSelection from "./Components/GameSelection";
+import { makeStyles } from "@mui/styles";
+import Footer from "./Components/Footer";
+
+const useStyles = makeStyles({
+  root: {
+    fontFamily: "'Arsenal', sans-serif",
+    minHeight: "100vh",
+  },
+});
 
 function App() {
+  const classes = useStyles();
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Grid
+      container
+      justifyContent="center"
+      alignItems={"center"}
+      className={classes.root}
+    >
+      <Navbar></Navbar>
+      <GameSelection></GameSelection>
+      <Footer></Footer>
+    </Grid>
   );
 }
 

@@ -84,3 +84,33 @@ def get_simulations(team_name: str, db: db_dependency):
     return response
 
 
+@router.get("/get_win_percentage/")
+def get_win_percentage(
+    home_team: str, 
+    away_team: str, 
+    db: Session = Depends(get_db)
+):
+    home_simulations = db.query(Simulation).filter(Simulation.team == home_team).all()
+    away_simulations = db.query(Simulation).filter(Simulation.team == away_team).all()
+
+    if not home_simulations or not away_simulations:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Simulations not found for one or both teams: {home_team}, {away_team}"
+        )
+
+    home_results = {sim.simulation_run: sim.results for sim in home_simulations}
+    away_results = {sim.simulation_run: sim.results for sim in away_simulations}
+
+    wins = sum(
+        1 for run in home_results if run in away_results and home_results[run] > away_results[run]
+    )
+    total_simulations = len(home_results)
+
+    win_percentage = (wins / total_simulations) * 100 if total_simulations > 0 else 0
+
+    rounded_win_percentage = round(win_percentage,1)
+
+    return {
+        "win_percentage": rounded_win_percentage
+    }
