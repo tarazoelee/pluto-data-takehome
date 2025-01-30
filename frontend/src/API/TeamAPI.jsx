@@ -1,4 +1,4 @@
-import api from "./api.js";
+import api from "../API";
 
 export async function getHomeTeams() {
   try {
