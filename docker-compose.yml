@@ -1,39 +1,39 @@
-# version: "3.8"
+version: "3.8"
 
-# services:
-#   frontend:
-#     build: ./frontend
-#     ports:
-#       - "3000:3000"
-#     depends_on:
-#       - backend
-#     environment:
-#       - REACT_APP_API_URL=http://localhost:8000
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    environment:
+      - REACT_APP_API_URL=http://localhost:8000
 
-#   backend:
-#     build: ./backend
-#     ports:
-#       - "8000:8000"
-#     depends_on:
-#       - db
-#     environment:
-#       POSTGRES_DB: mydb
-#       POSTGRES_USER: user
-#       POSTGRES_PASSWORD: password
-#       DATABASE_URL: postgres://user:password@db:5432/mydb
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      POSTGRES_DB: plutodb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: user
+      DATABASE_URL: postgresql://postgres:user@db:5433/plutodb
 
-#   db:
-#     image: postgres:13
-#     container_name: postgres
-#     restart: always
-#     environment:
-#       POSTGRES_USER: user
-#       POSTGRES_PASSWORD: password
-#       POSTGRES_DB: mydb
-#     ports:
-#       - "5432:5432"
-#     volumes:
-#       - postgres-data:/var/lib/postgresql/data
+  db:
+    image: postgres:13
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: plutodb
+    ports:
+      - "5433:5433"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
 
-# volumes:
-#   postgres-data:
+volumes:
+  postgres-data:
