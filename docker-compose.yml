@@ -13,25 +13,30 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       POSTGRES_DB: plutodb
-      POSTGRES_USER: postgres
+      POSTGRES_USER: taralee
       POSTGRES_PASSWORD: user
-      DATABASE_URL: postgresql://postgres:user@db:5433/plutodb
+      DATABASE_URL: "postgresql://taralee:user@db:5432/plutodb"
 
   db:
     image: postgres:13
     container_name: postgres
     restart: always
     environment:
-      POSTGRES_USER: postgres
+      POSTGRES_USER: taralee
       POSTGRES_PASSWORD: user
       POSTGRES_DB: plutodb
     ports:
-      - "5433:5433"
+      - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U taralee"]
+      interval: 5s
+      retries: 5
 
 volumes:
   postgres-data:

@@ -5,10 +5,10 @@ import pandas as pd
 #Database connection
 DB_CONFIG = {
     "dbname": "plutodb",
-    "user": "postgres",
+    "user": "taralee",
     "password": "user",
     "host": "db", #db host name in docker compose
-    "port": 5433
+    "port": 5432
 }
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -18,6 +18,8 @@ DATA_FILES = [
     os.path.join(DATA_DIR, "simulations.csv"),
     os.path.join(DATA_DIR, "venues.csv")
 ]
+
+print("Connecting to database with config:", DB_CONFIG)
 
 def load_csv_to_db(file_path, table_name):
     df = pd.read_csv(file_path)
