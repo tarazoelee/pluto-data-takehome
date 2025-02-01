@@ -28,7 +28,6 @@ const Histogram = ({ homeTeam, awayTeam }) => {
       }
     };
     fetchGameData();
-    console.log(simulationResultsAway);
   }, []);
 
   const bucketData = (homeData, awayData) => {
