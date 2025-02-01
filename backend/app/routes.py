@@ -97,14 +97,17 @@ def get_win_percentage(
             detail=f"Simulations not found for one or both teams: {home_team}, {away_team}"
         )
 
-    wins = sum(
-        1 for home, away in zip(home_results, away_results) if home > away
-    )
+    if len(home_results) != len(away_results):
+        raise HTTPException(
+            status_code=400,
+            detail=f"Mismatch in the number of simulations for {home_team} and {away_team}."
+        )
+    home_wins = sum(1 for home, away in zip(home_results, away_results) if home > away)
     total_simulations = len(home_results)
 
-    win_percentage = (wins / total_simulations) * 100 if total_simulations > 0 else 0
+    home_win_percentage = (home_wins / total_simulations) * 100 if total_simulations > 0 else 0
 
-    rounded_win_percentage = round(win_percentage,1)
+    rounded_win_percentage = round(home_win_percentage, 2)
 
     return {
         "win_percentage": rounded_win_percentage
