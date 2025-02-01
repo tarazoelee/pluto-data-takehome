@@ -7,15 +7,15 @@ from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 
 import pandas as pd
+import psycopg2
 import uvicorn
 
 from typing import Annotated
-from sqlalchemy.orm import Session
 
-import psycopg2
-
+#Creating an app with FastAPI
 app = FastAPI()
 
+#Connect to frontend at this port using CORS
 origins=["http://localhost:3000"]
 
 app.add_middleware(CORSMiddleware, allow_origins=origins,allow_credentials=True,allow_methods=["*"], allow_headers=["*"])
@@ -36,6 +36,7 @@ def get_db():
 
 db_dependency = Annotated[Session, Depends(get_db)]
 
+#WHEN NOT IN CONTAINER CAN BUILD DB TABLES MANUALLY USING THESE ENDPOINTS
 @app.post("/upload_venues/")
 def upload_venues(db: db_dependency):
     try:

@@ -2,7 +2,7 @@ import os
 import psycopg2
 import pandas as pd
 
-#Database connection
+#Database connection configurations
 DB_CONFIG = {
     "dbname": "plutodb",
     "user": "taralee",
@@ -11,6 +11,7 @@ DB_CONFIG = {
     "port": 5432
 }
 
+#Getting all the csv files in the data folder
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, "data")
 DATA_FILES = [
@@ -21,6 +22,7 @@ DATA_FILES = [
 
 print("Connecting to database with config:", DB_CONFIG)
 
+#Read data from each CSV file and build tables from them
 def load_csv_to_db(file_path, table_name):
     df = pd.read_csv(file_path)
     conn = psycopg2.connect(**DB_CONFIG)

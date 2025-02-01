@@ -6,6 +6,7 @@ from typing import Annotated
 
 router = APIRouter()
 
+#Connecting to db session 
 def get_db():
     db = SessionLocal()
     try:
@@ -66,6 +67,7 @@ def get_game_venue(home_team: str, away_team: str, date: str, db: db_dependency)
         "venue_name": venue.venue_name
     }
 
+#SIMULATION DATA 
 @router.get("/get_simulations/{team_name}")
 def get_simulations(team_name: str, db: db_dependency):
     simulation_results = db.query(Simulation.results).filter(Simulation.team == team_name).all()
