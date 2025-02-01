@@ -21,4 +21,4 @@ class Simulation(Base):
     team_id = Column(Integer, index=True)
     team = Column(String, index=True)
     simulation_run = Column(String)
-    results = Column(Float)
+    results = Column(Integer)
