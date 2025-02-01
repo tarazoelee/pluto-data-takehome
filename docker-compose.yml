@@ -6,7 +6,7 @@ services:
     depends_on:
       - backend
     environment:
-      - REACT_APP_API_URL=http://backend:8000 #use service name for backend in Docker network
+      - REACT_APP_API_URL=http://backend:8000 #using service name 'backend' in Docker network
 
   backend:
     build: ./backend
@@ -19,7 +19,7 @@ services:
       POSTGRES_USER: taralee
       POSTGRES_PASSWORD: user
       DATABASE_URL: "postgresql://taralee:user@db:5432/plutodb"
-    restart: always #restart it when it fails
+    restart: always #Restart containerwhen it fails
 
   db:
     image: postgres:13
@@ -33,7 +33,7 @@ services:
       - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
-    healthcheck:
+    healthcheck: #Contiainer run dependent on connection to db
       test: ["CMD-SHELL", "pg_isready -U taralee"]
       interval: 5s
       retries: 5

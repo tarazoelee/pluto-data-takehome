@@ -1,5 +1,7 @@
 import api from "../API";
 
+//RIGHT NOW THIS HAS ALL THE API CALLS
+//FIX: SEPERATE THEM INTO DIFF FILES
 export async function getHomeTeams() {
   try {
     const res = await api.get("/get_home_teams/");

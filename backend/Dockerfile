@@ -16,5 +16,5 @@ COPY . .
 #Expose backend port
 EXPOSE 8000
 
-#Command to run backend and upload csvs
+#Command to run backend and upload csvs using init file 
 CMD ["sh", "-c", "python app/init_db.py && uvicorn app.main:app --host 0.0.0.0 --port 8000"]
