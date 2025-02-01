@@ -7,7 +7,10 @@
 #using axios and cors to connect
 #run backend and front end to display data
 
-#start up using docker: docker compose up
+#rebuild images after changes: docker-compose up --build -d
+
+#how to stop: docker compose stop
+#start again: docker compose start
 
 #----manual start up-----
 #start backend: uvicorn app.main:app --reload
