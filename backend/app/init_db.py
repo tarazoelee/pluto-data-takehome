@@ -38,7 +38,6 @@ def load_csv_to_db(file_path, table_name):
 
     conn.commit()
     cursor.close()
-    print("sucessfully loaded csvs")
     conn.close()
 
 def main():

@@ -68,19 +68,15 @@ def get_game_venue(home_team: str, away_team: str, date: str, db: db_dependency)
 
 @router.get("/get_simulations/{team_name}")
 def get_simulations(team_name: str, db: db_dependency):
-    simulations = db.query(Simulation).filter(Simulation.team == team_name).all()
+    simulation_results = db.query(Simulation.results).filter(Simulation.team == team_name).all()
 
-    if not simulations:
+    if not simulation_results:
         raise HTTPException(
             status_code=404,
             detail=f"No simulations found for team '{team_name}'"
         )
 
-    response = [
-        {"simulation_run": sim.simulation_run, "results": sim.results}
-        for sim in simulations
-    ]
-
+    response = [sim_result[0] for sim_result in simulation_results]
     return response
 
 
@@ -90,20 +86,17 @@ def get_win_percentage(
     away_team: str, 
     db: Session = Depends(get_db)
 ):
-    home_simulations = db.query(Simulation).filter(Simulation.team == home_team).all()
-    away_simulations = db.query(Simulation).filter(Simulation.team == away_team).all()
+    home_results = get_simulations(home_team, db)
+    away_results = get_simulations(away_team, db)
 
-    if not home_simulations or not away_simulations:
+    if not home_results or not away_results:
         raise HTTPException(
             status_code=404,
             detail=f"Simulations not found for one or both teams: {home_team}, {away_team}"
         )
 
-    home_results = {sim.simulation_run: sim.results for sim in home_simulations}
-    away_results = {sim.simulation_run: sim.results for sim in away_simulations}
-
     wins = sum(
-        1 for run in home_results if run in away_results and home_results[run] > away_results[run]
+        1 for home, away in zip(home_results, away_results) if home > away
     )
     total_simulations = len(home_results)
 
