@@ -19,6 +19,7 @@ services:
       POSTGRES_USER: taralee
       POSTGRES_PASSWORD: user
       DATABASE_URL: "postgresql://taralee:user@db:5432/plutodb"
+    restart: always #restart it when it fails
 
   db:
     image: postgres:13
