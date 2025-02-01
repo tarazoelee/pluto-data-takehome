@@ -1,17 +1,24 @@
 # pluto-data-takehome
 
-#start backend virtual environment: source env/bin/activate
+#Docker Commands
+Welcome to Tara's cricket website! See the instructions below to start up the web-app.
 
-#connect to posgresql port 5433
+Made with love by Tara Lee.
 
-#using axios and cors to connect
-#run backend and front end to display data
+#rebuild container after changes
+`docker-compose up --build -d`
 
-#rebuild images after changes: docker-compose up --build -d
+##stop container
+`docker compose stop`
 
-#how to stop: docker compose stop
-#start again: docker compose start
+##start container
+`docker compose start`
 
-#----manual start up-----
-#start backend: uvicorn app.main:app --reload
-#start frontend: npm start
+#Manual Start up
+Have to change `DATABASE_URL` in `/backend/app/database.py` to "postgresql://taralee:user@localhost:5432/plutodb"
+
+##start backend
+`uvicorn app.main:app --reload`
+
+##start frontend
+`npm start`
