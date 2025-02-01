@@ -5,12 +5,7 @@ import Histogram from "./Histogram";
 import WinPercentage from "./WinPercentage";
 import SelectField from "./SelectField";
 import { makeStyles } from "@mui/styles";
-import {
-  getHomeTeams,
-  getGameDates,
-  getAwayTeams,
-  getSimulationResults,
-} from "../API/TeamAPI";
+import { getHomeTeams, getGameDates, getAwayTeams } from "../API/TeamAPI";
 
 const useStyles = makeStyles({
   root: {
@@ -27,8 +22,6 @@ function GameSelection() {
   const [homeTeams, setHomeTeams] = useState([]);
   const [awayTeams, setAwayTeams] = useState([]);
   const [gameDates, setGameDates] = useState([]);
-  const [simulationResultsHome, setSimulationResultsHome] = useState([]);
-  const [simulationResultsAway, setSimulationResultsAway] = useState([]);
   const [selectedHomeTeam, setHomeTeam] = useState("");
   const [selectedAwayTeam, setAwayTeam] = useState("");
   const [selectedGameDate, setGameDate] = useState("");
@@ -58,21 +51,13 @@ function GameSelection() {
 
   useEffect(() => {
     if (selectedHomeTeam && selectedAwayTeam) {
-      const fetchGameData = async () => {
+      const getSimulationData = async () => {
         const gameData = await getGameDates(selectedHomeTeam, selectedAwayTeam);
         if (gameData.success) {
           setGameDates(gameData.res);
         }
-        const simulationHome = await getSimulationResults(selectedHomeTeam);
-        if (simulationHome.success) {
-          setSimulationResultsHome(simulationHome.res);
-        }
-        const simulationAway = await getSimulationResults(selectedAwayTeam);
-        if (simulationAway.success) {
-          setSimulationResultsAway(simulationAway.res);
-        }
       };
-      fetchGameData();
+      getSimulationData();
     }
   }, [selectedHomeTeam, selectedAwayTeam]);
 
@@ -123,21 +108,18 @@ function GameSelection() {
           className={classes.histogramContainer}
           justifyContent={"center"}
         >
-          {simulationResultsHome.length > 0 &&
-            simulationResultsAway.length > 0 && (
+          {/* Once the teams are selected we can display graph and  win percentages */}
+          {selectedHomeTeam && selectedAwayTeam && (
+            <>
               <Histogram
-                simulationResultsHome={simulationResultsHome}
-                simulationResultsAway={simulationResultsAway}
                 homeTeam={selectedHomeTeam}
                 awayTeam={selectedAwayTeam}
               />
-            )}
-
-          {selectedHomeTeam && selectedAwayTeam && (
-            <WinPercentage
-              home_team={selectedHomeTeam}
-              away_team={selectedAwayTeam}
-            />
+              <WinPercentage
+                home_team={selectedHomeTeam}
+                away_team={selectedAwayTeam}
+              />
+            </>
           )}
         </Grid>
       </Grid>
