@@ -8,9 +8,12 @@ from fastapi.middleware.cors import CORSMiddleware
 
 import pandas as pd
 import psycopg2
+
+from sqlalchemy.orm import Session
+from typing import Annotated
+
 import uvicorn
 
-from typing import Annotated
 
 #Creating an app with FastAPI
 app = FastAPI()
