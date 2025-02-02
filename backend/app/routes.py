@@ -44,28 +44,35 @@ def get_game_dates(home_team: str, away_team: str, db: db_dependency):
         )
     return [date[0] for date in game_dates]
 
+
 @router.get("/game_venue/")
 def get_game_venue(home_team: str, away_team: str, date: str, db: db_dependency):
+    # Query to find the venue_id based on the teams and date
     game_venue = db.query(Game.venue_id).filter(
         Game.home_team == home_team,
         Game.away_team == away_team,
         Game.date == date
     ).first()
+
     if not game_venue:
         raise HTTPException(
             status_code=404,
             detail=f"No game found for home team {home_team}, away team {away_team}, and date {date}"
         )
-    venue = db.query(Venue.venue_name).filter(Venue.venue_id == game_venue).first()
-    print(venue)
+    
+    venue_id = game_venue[0]
+
+    venue = db.query(Venue.venue_name).filter(Venue.venue_id == venue_id).first()
+    
     if not venue:
         raise HTTPException(
             status_code=404,
-            detail=f"Venue not found for game {game_venue_id}"
+            detail=f"Venue not found for game with venue_id {venue_id}"
         )
     return {
-        "venue_name": venue
+        "venue_name": venue[0]
     }
+
 
 #SIMULATION DATA 
 @router.get("/simulations/{team_name}")

@@ -39,7 +39,6 @@ export async function getVenue(homeTeam, awayTeam, date) {
     const res = await api.get("/game_venue/", {
       params: { home_team: homeTeam, away_team: awayTeam, date: date },
     });
-    console.log(res.data);
     return { success: true, res: res.data };
   } catch (err) {
     console.error("Error fetching game dates", err);
