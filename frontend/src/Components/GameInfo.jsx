@@ -35,7 +35,7 @@ function WinPercentage(props) {
   }, [props]);
 
   return (
-    <Grid className={classes.winPercent}>
+    <Grid item className={classes.winPercent}>
       {props.home_team} win {winPercentage}% of the time!
     </Grid>
   );

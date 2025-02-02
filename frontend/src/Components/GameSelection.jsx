@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid2";
 
 import Histogram from "./Histogram";
-import WinPercentage from "./WinPercentage";
+import WinPercentage from "./GameInfo";
 import SelectField from "./SelectField";
 import { makeStyles } from "@mui/styles";
 import { getHomeTeams, getGameDates, getAwayTeams } from "../API/TeamAPI";

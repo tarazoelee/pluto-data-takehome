@@ -71,11 +71,15 @@ const Histogram = ({ homeTeam, awayTeam }) => {
       <BarChart data={data}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="range" margin={{ top: 20 }}>
-          <Label value="Simulation score ranges" position="bottom" />
+          <Label
+            value="Simulation result ranges"
+            position="insideBottom"
+            offset={-5}
+          />
         </XAxis>
         <YAxis margin={{ right: 20 }}>
           <Label
-            value="Score frequency"
+            value="Result frequency"
             offset={2}
             position="insideLeft"
             angle="-90"
