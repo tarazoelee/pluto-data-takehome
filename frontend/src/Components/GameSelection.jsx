@@ -2,10 +2,15 @@ import React, { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid2";
 
 import Histogram from "./Histogram";
-import WinPercentage from "./GameInfo";
+import GameInfo from "./GameInfo";
 import SelectField from "./SelectField";
 import { makeStyles } from "@mui/styles";
-import { getHomeTeams, getGameDates, getAwayTeams } from "../API/TeamAPI";
+import {
+  getHomeTeams,
+  getGameDates,
+  getAwayTeams,
+  getVenue,
+} from "../API/TeamAPI";
 
 const useStyles = makeStyles({
   root: {
@@ -25,6 +30,7 @@ function GameSelection() {
   const [selectedHomeTeam, setHomeTeam] = useState("");
   const [selectedAwayTeam, setAwayTeam] = useState("");
   const [selectedGameDate, setGameDate] = useState("");
+  const [selectedGameVenue, setGameVenue] = useState("");
   const classes = useStyles();
 
   useEffect(() => {
@@ -61,6 +67,23 @@ function GameSelection() {
     }
   }, [selectedHomeTeam, selectedAwayTeam]);
 
+  useEffect(() => {
+    if (selectedHomeTeam && selectedAwayTeam && selectedGameDate) {
+      const fetchGameVenue = async () => {
+        const gameVenue = await getVenue(
+          selectedHomeTeam,
+          selectedAwayTeam,
+          selectedGameDate
+        );
+        if (gameVenue.success) {
+          console.log(gameVenue.res);
+          setGameVenue(gameVenue.res.venue_name);
+        }
+      };
+      fetchGameVenue();
+    }
+  }, [selectedGameDate]);
+
   const handleSelectHomeTeam = (event) => {
     setHomeTeam(event.target.value);
     setAwayTeam("");
@@ -72,7 +95,7 @@ function GameSelection() {
     setAwayTeam(event.target.value);
   };
 
-  const handleSelectGame = (event) => {
+  const handleSelectGameDate = (event) => {
     setGameDate(event.target.value);
   };
 
@@ -100,7 +123,7 @@ function GameSelection() {
           ></SelectField>
           <SelectField
             selectedTeam={selectedGameDate}
-            handleSelectTeam={handleSelectGame}
+            handleSelectTeam={handleSelectGameDate}
             teamsList={gameDates}
             inputLabel={"Games"}
           ></SelectField>
@@ -118,9 +141,10 @@ function GameSelection() {
                 homeTeam={selectedHomeTeam}
                 awayTeam={selectedAwayTeam}
               />
-              <WinPercentage
+              <GameInfo
                 home_team={selectedHomeTeam}
                 away_team={selectedAwayTeam}
+                venue={selectedGameVenue}
               />
             </>
           )}

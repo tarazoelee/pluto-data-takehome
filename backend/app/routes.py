@@ -63,7 +63,6 @@ def get_game_venue(home_team: str, away_team: str, date: str, db: db_dependency)
             detail=f"Venue not found for game {game.id}"
         )
     return {
-        "venue_id": venue.venue_id,
         "venue_name": venue.venue_name
     }
 

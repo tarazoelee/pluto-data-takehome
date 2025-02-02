@@ -34,6 +34,19 @@ export async function getGameDates(homeTeam, awayTeam) {
   }
 }
 
+export async function getVenue(homeTeam, awayTeam, date) {
+  try {
+    const res = await api.get("/get_game_venue/", {
+      params: { home_team: homeTeam, away_team: awayTeam, date: date },
+    });
+    console.log(res.data);
+    return { success: true, res: res.data };
+  } catch (err) {
+    console.error("Error fetching game dates", err);
+    return { success: false, res: [] };
+  }
+}
+
 export async function getSimulationResults(team) {
   try {
     const res = await api.get(`/get_simulations/${team}`);

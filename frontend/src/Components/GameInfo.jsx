@@ -12,7 +12,7 @@ const useStyles = makeStyles({
   },
 });
 
-function WinPercentage(props) {
+function GameInfo(props) {
   const classes = useStyles();
   const [winPercentage, setWinPercentage] = useState("");
 
@@ -35,10 +35,16 @@ function WinPercentage(props) {
   }, [props]);
 
   return (
-    <Grid item className={classes.winPercent}>
-      {props.home_team} win {winPercentage}% of the time!
+    <Grid item container direction="column" className={classes.winPercent}>
+      <Grid>
+        {props.home_team} vs. {props.away_team}
+        {props.venue && ` at ${props.venue}`}
+      </Grid>
+      <Grid>
+        {props.home_team} win {winPercentage}% of the time!
+      </Grid>
     </Grid>
   );
 }
 
-export default WinPercentage;
+export default GameInfo;
