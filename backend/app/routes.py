@@ -17,12 +17,12 @@ def get_db():
 db_dependency = Annotated[Session, Depends(get_db)]
 
 #TEAM INFO
-@router.get("/get_home_teams/")
+@router.get("/home_teams/")
 def get_home_teams(db: db_dependency):
     home_teams = db.query(Game.home_team).distinct().all()
     return [team[0] for team in home_teams] 
 
-@router.get("/get_away_teams/{home_team}")
+@router.get("/away_teams/{home_team}")
 def get_away_teams(home_team: str, db: db_dependency):
     away_teams = db.query(Game.away_team).filter(Game.home_team == home_team).distinct().all()
     if not away_teams:
@@ -31,7 +31,7 @@ def get_away_teams(home_team: str, db: db_dependency):
 
 
 #GAME INFO 
-@router.get("/get_game_dates/")
+@router.get("/game_dates/")
 def get_game_dates(home_team: str, away_team: str, db: db_dependency):
     game_dates = db.query(Game.date).filter(
         Game.home_team == home_team,
@@ -44,7 +44,7 @@ def get_game_dates(home_team: str, away_team: str, db: db_dependency):
         )
     return [date[0] for date in game_dates]
 
-@router.get("/get_game_venue/")
+@router.get("/game_venue/")
 def get_game_venue(home_team: str, away_team: str, date: str, db: db_dependency):
     game = db.query(Game).filter(
         Game.home_team == home_team,
@@ -67,7 +67,7 @@ def get_game_venue(home_team: str, away_team: str, date: str, db: db_dependency)
     }
 
 #SIMULATION DATA 
-@router.get("/get_simulations/{team_name}")
+@router.get("/simulations/{team_name}")
 def get_simulations(team_name: str, db: db_dependency):
     simulation_results = db.query(Simulation.results).filter(Simulation.team == team_name).all()
 
@@ -81,7 +81,7 @@ def get_simulations(team_name: str, db: db_dependency):
     return response
 
 
-@router.get("/get_win_percentage/")
+@router.get("/win_percentage/")
 def get_win_percentage(
     home_team: str, 
     away_team: str, 
