@@ -63,6 +63,9 @@ function GameSelection() {
 
   const handleSelectHomeTeam = (event) => {
     setHomeTeam(event.target.value);
+    setAwayTeam("");
+    setGameDates([]);
+    setGameDate("");
   };
 
   const handleSelectAwayTeam = (event) => {
