@@ -89,10 +89,12 @@ function GameSelection() {
     setAwayTeam("");
     setGameDates([]);
     setGameDate("");
+    setGameVenue("");
   };
 
   const handleSelectAwayTeam = (event) => {
     setAwayTeam(event.target.value);
+    setGameVenue("");
   };
 
   const handleSelectGameDate = (event) => {
