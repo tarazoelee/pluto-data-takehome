@@ -13,7 +13,7 @@ class Game(Base):
     id = Column(Integer, primary_key=True, index=True)
     home_team = Column(String, index=True)
     away_team = Column(String, index=True)
-    date = Column(Date)
+    date = Column(String)
     venue_id = Column(Integer)
 
 class Simulation(Base):

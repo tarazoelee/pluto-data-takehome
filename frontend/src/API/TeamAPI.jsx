@@ -56,3 +56,18 @@ export async function getSimulationResults(team) {
     return { success: false, res: [] };
   }
 }
+
+export async function getWinPercentage(home_team, away_team) {
+  try {
+    const res = await api.get(`/win_percentage/`, {
+      params: {
+        home_team: home_team,
+        away_team: away_team,
+      },
+    });
+    return { success: true, res: res.data };
+  } catch (err) {
+    console.error("Error fetching win percentage", err);
+    return { success: false, res: [] };
+  }
+}

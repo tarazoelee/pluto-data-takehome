@@ -1,7 +1,7 @@
-import api from "../API";
 import Grid from "@mui/material/Grid2";
 import { makeStyles } from "@mui/styles";
 import React, { useState, useEffect } from "react";
+import { getWinPercentage } from "../API/TeamAPI";
 
 const useStyles = makeStyles({
   winPercent: {
@@ -23,21 +23,16 @@ function GameInfo(props) {
   const classes = useStyles();
   const [winPercentage, setWinPercentage] = useState("");
 
-  const fetch_win_percentage = async () => {
-    try {
-      const res = await api.get("/get_win_percentage/", {
-        params: {
-          home_team: props.home_team,
-          away_team: props.away_team,
-        },
-      });
-      setWinPercentage(res.data.win_percentage);
-    } catch (err) {
-      console.error("Error getting win percentage");
-    }
-  };
-
   useEffect(() => {
+    const fetch_win_percentage = async () => {
+      const winPercentage = await getWinPercentage(
+        props.home_team,
+        props.away_team
+      );
+      if (winPercentage.success) {
+        setWinPercentage(winPercentage.res.win_percentage);
+      }
+    };
     fetch_win_percentage();
   }, [props]);
 
