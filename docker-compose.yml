@@ -34,7 +34,7 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
     healthcheck: #Contiainer run dependent on connection to db
-      test: ["CMD-SHELL", "pg_isready -U taralee"]
+      test: ["CMD-SHELL", "pg_isready -U taralee -d plutodb"]
       interval: 5s
       retries: 5
 
