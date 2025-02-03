@@ -1,24 +1,29 @@
 # pluto-data-takehome
 
-#Docker Commands
 Welcome to Tara's cricket website! See the instructions below to start up the web-app.
 
-Made with love by Tara Lee.
+## Docker Commands
 
-#rebuild container after changes
+Build and run container or rebuild after changes:
 `docker-compose up --build -d`
 
-##stop container
-`docker compose stop`
-
-##start container
+Start container:
 `docker compose start`
 
-#Manual Start up
-Have to change `DATABASE_URL` in `/backend/app/database.py` to "postgresql://taralee:user@localhost:5432/plutodb"
+Stop containers:
+`docker compose stop`
 
-##start backend
+Remove containers and volumes:
+`docker-compose down -v`
+
+Access web-app at: `localhost:3000`
+
+## Manual Start up
+
+Change `DATABASE_URL` in `/backend/app/database.py` to `postgresql://taralee:user@localhost:5432/plutodb`
+
+Start backend
 `uvicorn app.main:app --reload`
 
-##start frontend
+Start frontend
 `npm start`
