@@ -6,6 +6,7 @@ from typing import Annotated
 
 router = APIRouter()
 
+#Connecting to db session 
 def get_db():
     db = SessionLocal()
     try:
@@ -16,12 +17,12 @@ def get_db():
 db_dependency = Annotated[Session, Depends(get_db)]
 
 #TEAM INFO
-@router.get("/get_home_teams/")
+@router.get("/home_teams/")
 def get_home_teams(db: db_dependency):
     home_teams = db.query(Game.home_team).distinct().all()
     return [team[0] for team in home_teams] 
 
-@router.get("/get_away_teams/{home_team}")
+@router.get("/away_teams/{home_team}")
 def get_away_teams(home_team: str, db: db_dependency):
     away_teams = db.query(Game.away_team).filter(Game.home_team == home_team).distinct().all()
     if not away_teams:
@@ -30,7 +31,7 @@ def get_away_teams(home_team: str, db: db_dependency):
 
 
 #GAME INFO 
-@router.get("/get_game_dates/")
+@router.get("/game_dates/")
 def get_game_dates(home_team: str, away_team: str, db: db_dependency):
     game_dates = db.query(Game.date).filter(
         Game.home_team == home_team,
@@ -43,73 +44,77 @@ def get_game_dates(home_team: str, away_team: str, db: db_dependency):
         )
     return [date[0] for date in game_dates]
 
-@router.get("/get_game_venue/")
+
+@router.get("/game_venue/")
 def get_game_venue(home_team: str, away_team: str, date: str, db: db_dependency):
-    game = db.query(Game).filter(
+    # Query to find the venue_id based on the teams and date
+    game_venue = db.query(Game.venue_id).filter(
         Game.home_team == home_team,
         Game.away_team == away_team,
         Game.date == date
     ).first()
-    if not game:
+
+    if not game_venue:
         raise HTTPException(
             status_code=404,
             detail=f"No game found for home team {home_team}, away team {away_team}, and date {date}"
         )
-    venue = db.query(Venue).filter(Venue.venue_id == game.venue_id).first()
+    
+    venue_id = game_venue[0]
+
+    venue = db.query(Venue.venue_name).filter(Venue.venue_id == venue_id).first()
+    
     if not venue:
         raise HTTPException(
             status_code=404,
-            detail=f"Venue not found for game {game.id}"
+            detail=f"Venue not found for game with venue_id {venue_id}"
         )
     return {
-        "venue_id": venue.venue_id,
-        "venue_name": venue.venue_name
+        "venue_name": venue[0]
     }
 
-@router.get("/get_simulations/{team_name}")
-def get_simulations(team_name: str, db: db_dependency):
-    simulations = db.query(Simulation).filter(Simulation.team == team_name).all()
 
-    if not simulations:
+#SIMULATION DATA 
+@router.get("/simulations/{team_name}")
+def get_simulations(team_name: str, db: db_dependency):
+    simulation_results = db.query(Simulation.results).filter(Simulation.team == team_name).all()
+
+    if not simulation_results:
         raise HTTPException(
             status_code=404,
             detail=f"No simulations found for team '{team_name}'"
         )
 
-    response = [
-        {"simulation_run": sim.simulation_run, "results": sim.results}
-        for sim in simulations
-    ]
-
+    response = [sim_result[0] for sim_result in simulation_results]
     return response
 
 
-@router.get("/get_win_percentage/")
+@router.get("/win_percentage/")
 def get_win_percentage(
     home_team: str, 
     away_team: str, 
     db: Session = Depends(get_db)
 ):
-    home_simulations = db.query(Simulation).filter(Simulation.team == home_team).all()
-    away_simulations = db.query(Simulation).filter(Simulation.team == away_team).all()
+    home_results = get_simulations(home_team, db)
+    away_results = get_simulations(away_team, db)
 
-    if not home_simulations or not away_simulations:
+    if not home_results or not away_results:
         raise HTTPException(
             status_code=404,
             detail=f"Simulations not found for one or both teams: {home_team}, {away_team}"
         )
 
-    home_results = {sim.simulation_run: sim.results for sim in home_simulations}
-    away_results = {sim.simulation_run: sim.results for sim in away_simulations}
-
-    wins = sum(
-        1 for run in home_results if run in away_results and home_results[run] > away_results[run]
-    )
+    if len(home_results) != len(away_results):
+        raise HTTPException(
+            status_code=400,
+            detail=f"Mismatch in the number of simulations for {home_team} and {away_team}."
+        )
+    home_wins = sum(1 for home, away in zip(home_results, away_results) if home > away)
     total_simulations = len(home_results)
 
-    win_percentage = (wins / total_simulations) * 100 if total_simulations > 0 else 0
+    home_win_percentage = (home_wins / total_simulations) * 100 if total_simulations > 0 else 0
 
-    rounded_win_percentage = round(win_percentage,1)
+    rounded_win_percentage = round(home_win_percentage, 2)
 
     return {
         "win_percentage": rounded_win_percentage

@@ -9,7 +9,6 @@ const useStyles = makeStyles({
   select: {
     width: 200,
     border: "white",
-
     "&.MuiSelect-root": {
       color: "white",
     },
@@ -32,10 +31,8 @@ function SelectField(props) {
   const classes = useStyles();
   return (
     <Grid item>
-      <FormControl fullWidth className={classes.formControl}>
-        <InputLabel className={classes.inputLabel}>
-          {props.inputLabel}
-        </InputLabel>
+      <FormControl fullWidth>
+        <InputLabel style={{ color: "#fff" }}>{props.inputLabel}</InputLabel>
         <Select
           value={props.selectedTeam}
           onChange={props.handleSelectTeam}

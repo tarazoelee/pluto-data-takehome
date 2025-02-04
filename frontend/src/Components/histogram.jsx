@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   BarChart,
   Bar,
@@ -10,13 +10,26 @@ import {
   Label,
   ResponsiveContainer,
 } from "recharts";
+import { getSimulationResults } from "../API/TeamAPI";
 
-const Histogram = ({
-  simulationResultsHome,
-  simulationResultsAway,
-  homeTeam,
-  awayTeam,
-}) => {
+const Histogram = ({ homeTeam, awayTeam }) => {
+  const [simulationResultsHome, setSimulationResultsHome] = useState([]);
+  const [simulationResultsAway, setSimulationResultsAway] = useState([]);
+
+  useEffect(() => {
+    const fetchGameData = async () => {
+      const simulationHome = await getSimulationResults(homeTeam);
+      if (simulationHome.success) {
+        setSimulationResultsHome(simulationHome.res);
+      }
+      const simulationAway = await getSimulationResults(awayTeam);
+      if (simulationAway.success) {
+        setSimulationResultsAway(simulationAway.res);
+      }
+    };
+    fetchGameData();
+  }, []);
+
   const bucketData = (homeData, awayData) => {
     const buckets = [
       { range: "80-100", homeCount: 0, awayCount: 0 },
@@ -28,8 +41,7 @@ const Histogram = ({
       { range: "200-220", homeCount: 0, awayCount: 0 },
     ];
 
-    homeData.forEach((item) => {
-      const score = item.results;
+    homeData.forEach((score) => {
       if (score >= 80 && score < 100) buckets[0].homeCount += 1;
       else if (score >= 100 && score < 120) buckets[1].homeCount += 1;
       else if (score >= 120 && score < 140) buckets[2].homeCount += 1;
@@ -39,8 +51,7 @@ const Histogram = ({
       else if (score >= 200 && score <= 220) buckets[6].homeCount += 1;
     });
 
-    awayData.forEach((item) => {
-      const score = item.results;
+    awayData.forEach((score) => {
       if (score >= 80 && score < 100) buckets[0].awayCount += 1;
       else if (score >= 100 && score < 120) buckets[1].awayCount += 1;
       else if (score >= 120 && score < 140) buckets[2].awayCount += 1;
@@ -60,11 +71,15 @@ const Histogram = ({
       <BarChart data={data}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="range" margin={{ top: 20 }}>
-          <Label value="Simulation score ranges" position="bottom" />
+          <Label
+            value="Simulation result ranges"
+            position="insideBottom"
+            offset={-5}
+          />
         </XAxis>
         <YAxis margin={{ right: 20 }}>
           <Label
-            value="Score frequency"
+            value="Result frequency"
             offset={2}
             position="insideLeft"
             angle="-90"

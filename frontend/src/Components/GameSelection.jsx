@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid2";
 
 import Histogram from "./Histogram";
-import WinPercentage from "./WinPercentage";
+import GameInfo from "./GameInfo";
 import SelectField from "./SelectField";
 import { makeStyles } from "@mui/styles";
 import {
   getHomeTeams,
   getGameDates,
   getAwayTeams,
-  getSimulationResults,
+  getVenue,
 } from "../API/TeamAPI";
 
 const useStyles = makeStyles({
@@ -27,11 +27,10 @@ function GameSelection() {
   const [homeTeams, setHomeTeams] = useState([]);
   const [awayTeams, setAwayTeams] = useState([]);
   const [gameDates, setGameDates] = useState([]);
-  const [simulationResultsHome, setSimulationResultsHome] = useState([]);
-  const [simulationResultsAway, setSimulationResultsAway] = useState([]);
   const [selectedHomeTeam, setHomeTeam] = useState("");
   const [selectedAwayTeam, setAwayTeam] = useState("");
   const [selectedGameDate, setGameDate] = useState("");
+  const [selectedGameVenue, setGameVenue] = useState("");
   const classes = useStyles();
 
   useEffect(() => {
@@ -58,33 +57,47 @@ function GameSelection() {
 
   useEffect(() => {
     if (selectedHomeTeam && selectedAwayTeam) {
-      const fetchGameData = async () => {
+      const getSimulationData = async () => {
         const gameData = await getGameDates(selectedHomeTeam, selectedAwayTeam);
         if (gameData.success) {
           setGameDates(gameData.res);
         }
-        const simulationHome = await getSimulationResults(selectedHomeTeam);
-        if (simulationHome.success) {
-          setSimulationResultsHome(simulationHome.res);
-        }
-        const simulationAway = await getSimulationResults(selectedAwayTeam);
-        if (simulationAway.success) {
-          setSimulationResultsAway(simulationAway.res);
-        }
       };
-      fetchGameData();
+      getSimulationData();
     }
   }, [selectedHomeTeam, selectedAwayTeam]);
 
+  useEffect(() => {
+    if (selectedHomeTeam && selectedAwayTeam && selectedGameDate) {
+      const fetchGameVenue = async () => {
+        const gameVenue = await getVenue(
+          selectedHomeTeam,
+          selectedAwayTeam,
+          selectedGameDate
+        );
+        if (gameVenue.success) {
+          console.log(gameVenue.res);
+          setGameVenue(gameVenue.res.venue_name);
+        }
+      };
+      fetchGameVenue();
+    }
+  }, [selectedGameDate]);
+
   const handleSelectHomeTeam = (event) => {
     setHomeTeam(event.target.value);
+    setAwayTeam("");
+    setGameDates([]);
+    setGameDate("");
+    setGameVenue("");
   };
 
   const handleSelectAwayTeam = (event) => {
     setAwayTeam(event.target.value);
+    setGameVenue("");
   };
 
-  const handleSelectGame = (event) => {
+  const handleSelectGameDate = (event) => {
     setGameDate(event.target.value);
   };
 
@@ -112,7 +125,7 @@ function GameSelection() {
           ></SelectField>
           <SelectField
             selectedTeam={selectedGameDate}
-            handleSelectTeam={handleSelectGame}
+            handleSelectTeam={handleSelectGameDate}
             teamsList={gameDates}
             inputLabel={"Games"}
           ></SelectField>
@@ -123,21 +136,19 @@ function GameSelection() {
           className={classes.histogramContainer}
           justifyContent={"center"}
         >
-          {simulationResultsHome.length > 0 &&
-            simulationResultsAway.length > 0 && (
+          {/* Once the teams are selected we can display graph and  win percentages */}
+          {selectedHomeTeam && selectedAwayTeam && (
+            <>
               <Histogram
-                simulationResultsHome={simulationResultsHome}
-                simulationResultsAway={simulationResultsAway}
                 homeTeam={selectedHomeTeam}
                 awayTeam={selectedAwayTeam}
               />
-            )}
-
-          {selectedHomeTeam && selectedAwayTeam && (
-            <WinPercentage
-              home_team={selectedHomeTeam}
-              away_team={selectedAwayTeam}
-            />
+              <GameInfo
+                home_team={selectedHomeTeam}
+                away_team={selectedAwayTeam}
+                venue={selectedGameVenue}
+              />
+            </>
           )}
         </Grid>
       </Grid>
